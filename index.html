@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050b14">
+    <title>Desenvolvimento Regional - Profundo e Analítico</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #050b14;
+            --bg-gradient-1: #0a192f;
+            --bg-gradient-2: #022c22;
+            --primary: #14b8a6; 
+            --primary-glow: rgba(20, 184, 166, 0.4);
+            --accent: #f59e0b; 
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100dvh; 
+            width: 100vw;
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior-y: none;
+        }
+
+        .slide-img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin: 1.2rem 0;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            display: block;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(20, 184, 166, 0.5); border-radius: 10px; }
+
+        .bg-container {
+            position: fixed; inset: 0; z-index: -2;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-gradient-1) 50%, var(--bg-gradient-2) 100%);
+        }
+
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35;
+            animation: floatOrb 20s infinite alternate ease-in-out;
+            will-change: transform;
+        }
+
+        .orb-1 { top: -10%; left: -20%; width: 70vw; height: 70vw; background: var(--primary-glow); }
+        .orb-2 { bottom: -10%; right: -20%; width: 80vw; height: 80vw; background: rgba(245, 158, 11, 0.15); animation-delay: -5s; }
+
+        @keyframes floatOrb { 
+            0% { transform: translate(0, 0) scale(1); } 
+            100% { transform: translate(15%, 15%) scale(1.1); } 
+        }
+
+        .slider-container {
+            position: relative; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .slide {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column; 
+            padding: 3.5rem 1.5rem 6rem 1.5rem; 
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s var(--ease-out-expo), visibility 0.5s;
+            transform: translateX(40px);
+            overflow-y: auto; overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .slide.active { opacity: 1; visibility: visible; pointer-events: all; transform: translateX(0); z-index: 10; }
+        .slide.prev { transform: translateX(-40px); }
+
+        .slide-content { width: 100%; max-width: 650px; margin: auto; display: flex; flex-direction: column; justify-content: flex-start; min-height: 100%; padding-bottom: 2rem; }
+
+        h1, h2, h3, h4, .tag { font-family: 'Outfit', sans-serif; }
+
+        .tag {
+            display: inline-flex; align-items: center; gap: 8px; width: fit-content;
+            padding: 5px 14px; border-radius: 50px;
+            background: rgba(20, 184, 166, 0.12); border: 1px solid rgba(20, 184, 166, 0.25);
+            color: var(--primary); font-size: 0.75rem; font-weight: 600;
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem;
+        }
+
+        h1 { font-size: clamp(2.2rem, 9vw, 3.2rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; background: linear-gradient(to right, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { font-size: clamp(1.5rem, 6vw, 2rem); font-weight: 700; margin-bottom: 1.2rem; color: #fff; line-height: 1.2; border-left: 3px solid var(--primary); padding-left: 15px; }
+        h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        p { font-size: 1rem; line-height: 1.7; color: var(--text-muted); font-weight: 300; margin-bottom: 1rem; }
+        strong { color: #fff; font-weight: 500; }
+        .highlight { color: var(--accent); font-weight: 600; }
+
+        .glass-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.2rem; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); margin-bottom: 1.2rem; }
+        
+        .reveal { opacity: 0; transform: translateY(15px); transition: all 0.6s var(--ease-out-expo); }
+        .slide.active .reveal { opacity: 1; transform: translateY(0); }
+        .d-1 { transition-delay: 0.15s; } .d-2 { transition-delay: 0.3s; }
+
+        .controls-wrapper { position: fixed; bottom: 0; left: 0; width: 100%; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; z-index: 100; pointer-events: none; background: linear-gradient(to top, var(--bg-dark) 40%, transparent); }
+        .slide-counter { font-family: 'Outfit', sans-serif; font-weight: 600; color: #fff; pointer-events: all; background: rgba(255,255,255,0.08); padding: 5px 15px; border-radius: 15px; font-size: 0.9rem; }
+        .nav-buttons { display: flex; gap: 0.8rem; pointer-events: all; }
+        .btn { width: 48px; height: 48px; border-radius: 50%; background: rgba(20, 184, 166, 0.15); border: 1px solid var(--primary); color: #fff; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+
+        @media (min-width: 768px) {
+            .slide-content { padding-top: 2rem; }
+            .slide-img { max-height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-container"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+    <div class="progress-container" style="position:fixed; top:0; width:100%; height:4px; background:rgba(255,255,255,0.1); z-index:1000;"><div class="progress-bar" id="progressBar" style="height:100%; background:var(--primary); width:0%;"></div></div>
+
+    <div class="slider-container" id="slider">
+
+        <div class="slide active">
+            <div class="slide-content text-center">
+                <div class="tag reveal">Estratégia & Território</div>
+                <h1 class="reveal d-1">Desafios do Desenvolvimento Regional</h1>
+                <img src="assets/capa.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+                <p class="reveal d-2">Uma investigação sobre as disparidades socioeconômicas e as rotas para um crescimento <strong>sustentável</strong> e <strong>integrado</strong> no Brasil e no Maranhão.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2 class="reveal">O Que é Desenvolvimento Regional?</h2>
+                <p class="reveal d-1">Diferente do simples crescimento do PIB, o desenvolvimento regional é <strong>multidimensional</strong>. Ele foca na redução das desigualdades internas e na melhoria do bem-estar social em escalas locais.</p>
+                <div class="glass-card reveal d-2">
+                    <h3>Pilares Fundamentais:</h3>
+                    <p>• <strong>Econômico:</strong> Geração de emprego e renda diversificada.<br>
+                       • <strong>Social:</strong> Acesso a saúde, educação e saneamento.<br>
+                       • <strong>Institucional:</strong> Capacidade de gestão pública eficiente.</p>
+                </div>
+                <img src="assets/slide2.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2 class="reveal">O Cenário no Brasil</h2>
+                <p class="reveal d-1">O Brasil é marcado por um "dualismo" histórico. Enquanto o <strong>Centro-Sul</strong> se industrializou e modernizou, o <strong>Norte e Nordeste</strong> permaneceram, por muito tempo, como fornecedores de matérias-primas e mão de obra.</p>
+                <div class="glass-card reveal d-2">
+                    <p>Atualmente, o desafio é a <strong>desconcentração produtiva</strong>: levar a indústria e o valor agregado para fora dos grandes centros metropolitanos do Sudeste.</p>
+                </div>
+                <img src="assets/slide3.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <div class="tag reveal">Análise Estadual</div>
+                <h2 class="reveal d-1">O Maranhão em Foco</h2>
+                <p class="reveal d-2">O Maranhão ocupa uma posição estratégica no Arco Norte do Brasil. Com o <strong>Porto do Itaqui</strong>, o estado é um dos principais portões de saída para a produção de grãos e minérios do país.</p>
+                <div class="glass-card reveal d-2" style="background: rgba(20, 184, 166, 0.05);">
+                    <p><strong>O Contraste:</strong> Apesar de ser um gigante logístico, o estado ainda enfrenta baixos índices de IDH no interior, revelando que a riqueza portuária nem sempre "transborda" para a população local.</p>
+                </div>
+                <img src="assets/slide4.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2 class="reveal">1. Desigualdade Social</h2>
+                <p class="reveal d-1">A má distribuição de renda no Brasil é um entrave ao desenvolvimento local. Sem poder de consumo nas cidades menores, o comércio não gira e a economia estagna.</p>
+                <div class="glass-card reveal d-2" style="border-left: 4px solid #f43f5e;">
+                    <h3>Consequências:</h3>
+                    <p>• Êxodo rural desordenado para as capitais.<br>
+                       • Formação de periferias sem infraestrutura básica.<br>
+                       • Dependência crônica de auxílios governamentais.</p>
+                </div>
+                <img src="assets/slide5.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2 class="reveal">2. Falta de Infraestrutura</h2>
+                <p class="reveal d-1">A infraestrutura é o sistema circulatório da economia. No Maranhão e no Brasil, estradas precárias e a ausência de ferrovias encarecem o "Custo Brasil".</p>
+                <div class="glass-card reveal d-2">
+                    <p><strong>Saneamento:</strong> A falta de rede de esgoto e água tratada em regiões periféricas gera gastos bilionários em saúde pública, sobrecarregando o SUS e travando o desenvolvimento produtivo.</p>
+                </div>
+                <img src="assets/slide6.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2 class="reveal">3. Pobreza em Áreas Rurais</h2>
+                <p class="reveal d-1">O interior do Nordeste possui vastas áreas de <strong>agricultura de subsistência</strong>. O grande desafio é transformar o pequeno produtor em um empreendedor rural.</p>
+                <div class="glass-card reveal d-2">
+                    <h3>Necessidades Urgentes:</h3>
+                    <p>• <strong>Assistência Técnica:</strong> Levar conhecimento agronômico ao campo.<br>
+                       • <strong>Acesso a Crédito:</strong> Facilitar a compra de equipamentos e sementes.<br>
+                       • <strong>Energia:</strong> Universalização da luz para industrialização da produção.</p>
+                </div>
+                <img src="assets/slide7.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2 class="reveal">4. Impactos Ambientais</h2>
+                <p class="reveal d-1">O avanço da fronteira agrícola (MATOPIBA) e grandes projetos de mineração trazem riqueza, mas exigem vigilância rigorosa para não destruir o Cerrado e a Amazônia Maranhense.</p>
+                <div class="glass-card reveal d-2" style="border-left: 4px solid #22c55e;">
+                    <p>O desenvolvimento regional moderno deve ser <strong>Eco-Amigável</strong>, integrando comunidades tradicionais e quilombolas no processo produtivo, respeitando seu território e cultura.</p>
+                </div>
+                <img src="assets/slide8.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2 class="reveal">Inovação e Tecnologia</h2>
+                <p class="reveal d-1">A revolução digital pode ser a maior aliada das regiões periféricas. A conectividade 5G e a Internet das Coisas (IoT) permitem que o interior se conecte aos mercados globais.</p>
+                <div class="glass-card reveal d-2">
+                    <p>A <strong>educação à distância</strong> e a <strong>telemedicina</strong> são exemplos de como a tecnologia reduz a barreira física e leva serviços de elite para as áreas mais remotas do Brasil.</p>
+                </div>
+                <img src="assets/slide9.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2 class="reveal">Políticas Públicas de Estado</h2>
+                <p class="reveal d-1">Desenvolvimento não se faz em 4 anos. É necessário que existam <strong>Políticas de Estado</strong>, que sobrevivam a trocas de governos e foquem no longo prazo.</p>
+                <div class="glass-card reveal d-2">
+                    <p>O investimento em <strong>educação técnica</strong> focado na vocação regional (ex: mecânica em áreas portuárias, agronomia em áreas rurais) é a chave para o crescimento autossustentável.</p>
+                </div>
+                <img src="assets/slide10.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content text-center">
+                <div class="tag reveal">Síntese Final</div>
+                <h2 class="reveal d-1">O Caminho do Equilíbrio</h2>
+                <img src="assets/slide11.png" class="slide-img reveal d-2" onerror="this.style.display='none'">
+                <p class="reveal d-2">Para que o Brasil e o Maranhão alcancem seu potencial máximo, o crescimento econômico deve ser o motor, mas a <strong>justiça social</strong> e a <strong>preservação ambiental</strong> devem ser os trilhos.</p>
+                <div class="glass-card reveal d-3" style="background: var(--primary); color: #000; font-weight: 700; font-size: 1.1rem;">
+                    CONSTRUINDO UM FUTURO MAIS JUSTO.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="controls-wrapper">
+        <div class="slide-counter" id="slideCounter">1 / 11</div>
+        <div class="nav-buttons">
+            <button class="btn" id="prevBtn" onclick="changeSlide(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="btn" id="nextBtn" onclick="changeSlide(1)"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        const slideCounter = document.getElementById('slideCounter');
+        let currentSlide = 0;
+
+        function updateUI() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index === currentSlide) slide.classList.add('active');
+                else if (index < currentSlide) slide.classList.add('prev');
+            });
+            document.getElementById('prevBtn').style.opacity = currentSlide === 0 ? "0.3" : "1";
+            document.getElementById('nextBtn').style.opacity = currentSlide === (slides.length - 1) ? "0.3" : "1";
+            slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
+            progressBar.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+        }
+
+        function changeSlide(direction) {
+            const next = currentSlide + direction;
+            if (next >= 0 && next < slides.length) { currentSlide = next; updateUI(); }
+        }
+
+        let touchX = 0;
+        document.addEventListener('touchstart', e => { touchX = e.changedTouches[0].screenX; }, {passive:true});
+        document.addEventListener('touchend', e => { 
+            const dist = e.changedTouches[0].screenX - touchX;
+            if (Math.abs(dist) > 60) dist < 0 ? changeSlide(1) : changeSlide(-1);
+        }, {passive:true});
+
+        updateUI();
+    </script>
+</body>
+</html>
