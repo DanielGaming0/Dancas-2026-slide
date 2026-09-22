@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Parnasianismo - A Perfeição da Forma</title>
+  
+  <!-- Fontes do Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* RESET & VARIAVEIS DE DESIGN */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg-dark: #0a0b10;
+      --bg-gradient: radial-gradient(circle at 50% 40%, #151828 0%, #08090d 100%);
+      --accent-gold: #e2b872;
+      --accent-ruby: #e63946;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(226, 184, 114, 0.22);
+      --text-bright: #ffffff;
+      --text-sub: #94a3b8;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      color: var(--text-bright);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* CONTAINER FULLSCREEN */
+    .slide-deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg-gradient);
+      overflow: hidden;
+    }
+
+    /* SLIDES */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      padding: clamp(30px, 6vh, 70px) clamp(30px, 8vw, 120px) 90px clamp(30px, 8vw, 120px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.95) translateY(15px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                  visibility 0.6s;
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+      z-index: 2;
+    }
+
+    /* ÍCONES FLUTUANTES ELECANTES */
+    .floating-icon {
+      position: absolute;
+      color: var(--accent-gold);
+      opacity: 0.04;
+      pointer-events: none;
+      user-select: none;
+      animation: floatSmooth 11s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatSmooth {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-22px) rotate(4deg); }
+      100% { transform: translateY(0px) rotate(-2deg); }
+    }
+
+    .pos-1 { top: 8%; right: 7%; font-size: clamp(6rem, 15vw, 13rem); animation-delay: 0s; }
+    .pos-2 { bottom: 12%; left: 5%; font-size: clamp(5rem, 12vw, 10rem); animation-delay: 3s; }
+    .pos-3 { top: 15%; left: 8%; font-size: clamp(4rem, 9vw, 8rem); animation-delay: 5s; }
+
+    /* ELEM. TIPOGRÁFICOS */
+    .tag {
+      display: inline-block;
+      font-size: clamp(0.75rem, 1.1vw, 0.85rem);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--accent-gold);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    h1, h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--text-bright);
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5.2vw, 4.3rem);
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      margin-bottom: 22px;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      line-height: 1.75;
+      color: var(--text-sub);
+      max-width: 950px;
+      margin-bottom: 16px;
+      font-weight: 300;
+    }
+
+    strong {
+      color: var(--text-bright);
+      font-weight: 600;
+    }
+
+    .highlight-ruby {
+      color: var(--accent-ruby);
+      font-weight: 600;
+    }
+
+    .highlight-gold {
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    /* CAPA */
+    .slide-cover {
+      text-align: center;
+      align-items: center;
+    }
+
+    .slide-cover h1 {
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 1.7vw, 1.35rem);
+      color: var(--text-sub);
+      margin-bottom: 35px;
+      font-style: italic;
+      max-width: 800px;
+    }
+
+    /* CARDS & COMPARATIVOS */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 10px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--accent-gold);
+      padding: 24px;
+      border-radius: 8px;
+      backdrop-filter: blur(6px);
+    }
+
+    .card.ruby-border {
+      border-left-color: var(--accent-ruby);
+    }
+
+    .card h3 {
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      color: var(--text-bright);
+      margin-bottom: 10px;
+      font-family: 'Cinzel', serif;
+    }
+
+    .card p {
+      font-size: clamp(0.85rem, 1.1vw, 0.98rem);
+      margin-bottom: 0;
+      color: var(--text-sub);
+    }
+
+    /* CAIXA DE POEMA REFINADA */
+    .poem-box {
+      background: rgba(226, 184, 114, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 30px 40px;
+      margin-top: 10px;
+      max-width: 750px;
+      position: relative;
+    }
+
+    .poem-box::before {
+      content: "“";
+      font-family: 'Cinzel', serif;
+      font-size: 5rem;
+      color: var(--accent-gold);
+      opacity: 0.2;
+      position: absolute;
+      top: -10px;
+      left: 15px;
+    }
+
+    .poem-text {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      line-height: 1.8;
+      color: #f8fafc;
+      font-style: italic;
+    }
+
+    /* BARRA DE NAVEGAÇÃO INFERIOR */
+    .nav-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 70px;
+      padding: 0 clamp(30px, 8vw, 120px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 11, 16, 0.88);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 100;
+    }
+
+    .counter {
+      font-size: clamp(0.8rem, 1.1vw, 0.95rem);
+      color: var(--text-sub);
+      letter-spacing: 2px;
+      font-weight: 500;
+    }
+
+    .counter span {
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+
+    .arrows-box {
+      display: flex;
+      gap: 16px;
+    }
+
+    .arrow-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-bright);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .arrow-btn:hover:not(:disabled) {
+      background: var(--accent-gold);
+      color: var(--bg-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(226, 184, 114, 0.3);
+    }
+
+    .arrow-btn:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    /* OVERLAY PARA CELULAR EM PÉ */
+    .rotate-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg-dark);
+      z-index: 9999;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .rotate-overlay i {
+      font-size: 3.5rem;
+      color: var(--accent-gold);
+      margin-bottom: 20px;
+      animation: rotatePhone 2.5s infinite ease-in-out;
+    }
+
+    @keyframes rotatePhone {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-90deg); }
+    }
+
+    @media (max-width: 768px) and (orientation: portrait) {
+      .rotate-overlay { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AVISO DE GIRO PARA TELAS MÓVEIS -->
+  <div class="rotate-overlay">
+    <i class="fa-solid fa-mobile-screen-button"></i>
+    <h2>Gire o seu dispositivo</h2>
+    <p>Para visualizar o slide com a proporção correta, coloque o celular na horizontal.</p>
+  </div>
+
+  <div class="slide-deck">
+
+    <!-- SEÇÃO 1: CAPA -->
+    <section class="slide slide-cover active">
+      <i class="fa-solid fa-gem floating-icon pos-1"></i>
+      <i class="fa-solid fa-landmark floating-icon pos-2"></i>
+      <i class="fa-solid fa-pen-nib floating-icon pos-3"></i>
+
+      <span class="tag">Estética & Movimento Literário</span>
+      <h1>O Parnasianismo</h1>
+      <p class="subtitle">A Busca Incondicional pela Perfeição Formal e a Arte pela Arte</p>
+    </section>
+
+    <!-- SEÇÃO 2: O QUE FOI -->
+    <section class="slide">
+      <i class="fa-solid fa-columns floating-icon pos-1"></i>
+      <i class="fa-solid fa-scroll floating-icon pos-2"></i>
+
+      <span class="tag">01 / Conceito Fundamental</span>
+      <h2>O que foi o Parnasianismo?</h2>
+      <p>O Parnasianismo foi um movimento literário focado exclusivamente na poesia, caracterizado pela busca do <strong>rigor formal</strong>, da <strong>perfeição estética</strong>, da linguagem erudita e da objetividade absoluta.</p>
+      <p>Sua proposta surgiu como um contraponto direto aos exageros sentimentais e ao egocentrismo do Romantismo.</p>
+      <p><strong>A Origem do Nome:</strong> O termo deriva do <em>Monte Parnaso</em> — na mitologia grega, a morada do deus Apolo e das Musas, simbolizando o berço sagrado da inspiração e da beleza clássica.</p>
+    </section>
+
+    <!-- SEÇÃO 3: SURGIMENTO E CHEGADA AO BRASIL -->
+    <section class="slide">
+      <i class="fa-solid fa-earth-europe floating-icon pos-1"></i>
+      <i class="fa-solid fa-crown floating-icon pos-2"></i>
+
+      <span class="tag">02 / Contexto Histórico</span>
+      <h2>Origem e Chegada ao Brasil</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <h3>França (Segunda metade do Séc. XIX)</h3>
+          <p>Ganha projeção a partir de 1866 com a publicação das coletâneas de poemas <em>Le Parnasse Contemporain</em> ("O Parnaso Contemporâneo").</p>
+        </div>
+        <div class="card">
+          <h3>Brasil (1870–1920)</h3>
+          <p>Manifestou-se no fim da década de 1870 e consolidou-se na de 1880, num contexto de lutas como o Abolicionismo e a Proclamação da República. Foi a estética dominante até o Modernismo (1922).</p>
+        </div>
+      </div>
+      <p style="margin-top: 18px;"><strong>A Tríade Parnasiana:</strong> O movimento no Brasil teve como pilares os poetas <span class="highlight-gold">Olavo Bilac</span>, <span class="highlight-gold">Alberto de Oliveira</span> e <span class="highlight-gold">Raimundo Correia</span>.</p>
+    </section>
+
+    <!-- SEÇÃO 4: ARTE PELA ARTE -->
+    <section class="slide">
+      <i class="fa-solid fa-wand-magic-sparkles floating-icon pos-1"></i>
+      <i class="fa-solid fa-scale-unbalanced floating-icon pos-2"></i>
+
+      <span class="tag">03 / Doutrina Estética</span>
+      <h2>O Conceito de "Arte Pela Arte"</h2>
+      <p>Formulado pelo escritor francês Théophile Gautier, o conceito de <strong>"Arte pela arte"</strong> (<em>L'art pour l'art</em>) defende que a obra poética não precisa ter qualquer utilidade prática, social, moral ou política.</p>
+      <p>A arte vale por si mesma. O único e supremo objetivo do poeta parnasiano deve ser a busca incondicional pela <strong>beleza pura</strong>, pela harmonia métrica e pelo apuro técnico da linguagem.</p>
+    </section>
+
+    <!-- SEÇÃO 5: ROMANTISMO VS PARNASIANISMO -->
+    <section class="slide">
+      <i class="fa-solid fa-scale-balanced floating-icon pos-1"></i>
+      <i class="fa-solid fa-heart-crack floating-icon pos-2"></i>
+
+      <span class="tag">04 / Comparativo Estético</span>
+      <h2>Romantismo vs. Parnasianismo</h2>
+      <div class="cards-grid">
+        <div class="card ruby-border">
+          <h3>Romantismo</h3>
+          <p>• Centrado na <strong>subjetividade</strong> e emoção aflorada.<br>
+             • Sentimentalismo indisciplinado.<br>
+             • Metrificação livre e expressão do "eu".<br>
+             • Poeta visto como um gênio inspirado.</p>
+        </div>
+        <div class="card">
+          <h3>Parnasianismo</h3>
+          <p>• Centrado na <strong>objetividade</strong> e impassibilidade.<br>
+             • Controle e contenção das emoções.<br>
+             • Rigor métrico (Sonetos, versos Alexadrinos).<br>
+             • Poeta visto como um <strong>artesão/ourives</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 6: POEMA PROFISSÃO DE FÉ -->
+    <section class="slide">
+      <i class="fa-solid fa-quote-right floating-icon pos-1"></i>
+      <i class="fa-solid fa-gem floating-icon pos-2"></i>
+
+      <span class="tag">05 / Exemplo Literário</span>
+      <h2>"Profissão de Fé" — Olavo Bilac</h2>
+      <p>O trecho abaixo exemplifica em versos o próprio manifesto do movimento:</p>
+      
+      <div class="poem-box">
+        <div class="poem-text">
+          "Torce, aprimora, alteia, lima<br>
+          A frase; e, enfim,<br>
+          No verso de ouro engasta a rima,<br>
+          Como um <span class="highlight-ruby">rubim</span>.<br><br>
+          (...)<br><br>
+          Assim procedo. Minha pena<br>
+          Segue esta norma,<br>
+          Por te servir, Deusa serena,<br>
+          <span class="highlight-gold">Serena Forma!</span>"
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 7: O POETA COMO ARTESÃO -->
+    <section class="slide">
+      <i class="fa-solid fa-hammer floating-icon pos-1"></i>
+      <i class="fa-solid fa-ring floating-icon pos-2"></i>
+
+      <span class="tag">06 / Análise do Trecho</span>
+      <h2>O Poeta como Artesão e Ourives</h2>
+      <p>No trecho de Bilac, observa-se uma sequência de verbos de ação manual: <strong>"torce, aprimora, alteia, lima"</strong>.</p>
+      <p>Isso prova que, para o Parnasianismo, a poesia não nasce do acaso ou do arrebatamento emocional, mas sim do trabalho exaustivo de esculpir a palavra.</p>
+      <p>O poeta é comparado a um <strong>ourives</strong> que trabalha o ouro para engastar uma pedra preciosa (o <span class="highlight-ruby">rubim</span>/rima), demonstrando o cuidado minucioso com a estrutura poética.</p>
+    </section>
+
+    <!-- SEÇÃO 8: SACRALIZAÇÃO DA FORMA -->
+    <section class="slide">
+      <i class="fa-solid fa-hands-praying floating-icon pos-1"></i>
+      <i class="fa-solid fa-award floating-icon pos-2"></i>
+
+      <span class="tag">07 / Análise Teórica</span>
+      <h2>Sacralização da Forma & Prática</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <h3>A "Deusa" Forma</h3>
+          <p>Ao personificar a Forma como uma <em>"Deusa serena"</em>, Bilac coloca a beleza estética em um patamar sagrado, devotando sua arte exclusivamente a ela.</p>
+        </div>
+        <div class="card">
+          <h3>Demonstração Prática</h3>
+          <p>O poema pratica exatamente o que prega: possui ritmo simétrico, alternância regular de versos e rimas ricas, unindo técnica e conteúdo em perfeita harmonia.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 9: CONCLUSÃO -->
+    <section class="slide">
+      <i class="fa-solid fa-feather-pointed floating-icon pos-1"></i>
+      <i class="fa-solid fa-ribbon floating-icon pos-2"></i>
+
+      <span class="tag">08 / Conclusão</span>
+      <h2>O Legado do Parnasianismo</h2>
+      <p>O Parnasianismo legou à literatura o culto ao domínio do idioma, ao refinamento das palavras e à estrutura perfeita do verso.</p>
+      <p>Representou o auge da sofisticação estética da <em>Belle Époque</em>, deixando marcas profundas na forma como a poesia e a língua portuguesa foram lapidadas no Brasil.</p>
+    </section>
+
+    <!-- CONTROLES COM 2 SETAS INFERIORES -->
+    <div class="nav-bar">
+      <div class="counter">SEÇÃO <span id="current-index">01</span> / 09</div>
+      <div class="arrows-box">
+        <button class="arrow-btn" id="btn-prev" aria-label="Slide Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="arrow-btn" id="btn-next" aria-label="Próximo Slide"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.slide');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      const currentIndexText = document.getElementById('current-index');
+      
+      let currentIdx = 0;
+      const totalSlides = slides.length;
+
+      function updateSlideState() {
+        slides.forEach((slide, idx) => {
+          if (idx === currentIdx) {
+            slide.classList.add('active');
+          } else {
+            slide.classList.remove('active');
+          }
+        });
+
+        currentIndexText.textContent = String(currentIdx + 1).padStart(2, '0');
+        
+        btnPrev.disabled = currentIdx === 0;
+        btnNext.disabled = currentIdx === totalSlides - 1;
+      }
+
+      btnNext.addEventListener('click', () => {
+        if (currentIdx < totalSlides - 1) {
+          currentIdx++;
+          updateSlideState();
+        }
+      });
+
+      btnPrev.addEventListener('click', () => {
+        if (currentIdx > 0) {
+          currentIdx--;
+          updateSlideState();
+        }
+      });
+
+      // Navegação por Teclado
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+          if (currentIdx < totalSlides - 1) {
+            currentIdx++;
+            updateSlideState();
+          }
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          if (currentIdx > 0) {
+            currentIdx--;
+            updateSlideState();
+          }
+        }
+      });
+
+      updateSlideState();
+    });
+  </script>
+</body>
+</html>
