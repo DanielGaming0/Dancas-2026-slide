@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Esporte de Invasão - Educação Física</title>
+  
+  <!-- Fontes do Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* RESET & VARIÁVEIS DE DESIGN */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg-dark: #0a0b10;
+      --bg-gradient: radial-gradient(circle at 50% 40%, #151828 0%, #08090d 100%);
+      --accent-gold: #38bdf8; /* Azul cyan moderno e esportivo */
+      --accent-emerald: #10b981;
+      --accent-ruby: #e63946;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(56, 189, 248, 0.22);
+      --text-bright: #ffffff;
+      --text-sub: #94a3b8;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      color: var(--text-bright);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* CONTAINER FULLSCREEN */
+    .slide-deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg-gradient);
+      overflow: hidden;
+    }
+
+    /* SLIDES */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      padding: clamp(30px, 6vh, 70px) clamp(30px, 8vw, 120px) 90px clamp(30px, 8vw, 120px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.95) translateY(15px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                  visibility 0.6s;
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+      z-index: 2;
+    }
+
+    /* ÍCONES FLUTUANTES ELEGANTES */
+    .floating-icon {
+      position: absolute;
+      color: var(--accent-gold);
+      opacity: 0.04;
+      pointer-events: none;
+      user-select: none;
+      animation: floatSmooth 11s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatSmooth {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-22px) rotate(4deg); }
+      100% { transform: translateY(0px) rotate(-2deg); }
+    }
+
+    .pos-1 { top: 8%; right: 7%; font-size: clamp(6rem, 15vw, 13rem); animation-delay: 0s; }
+    .pos-2 { bottom: 12%; left: 5%; font-size: clamp(5rem, 12vw, 10rem); animation-delay: 3s; }
+    .pos-3 { top: 15%; left: 8%; font-size: clamp(4rem, 9vw, 8rem); animation-delay: 5s; }
+
+    /* ELEM. TIPOGRÁFICOS */
+    .tag {
+      display: inline-block;
+      font-size: clamp(0.75rem, 1.1vw, 0.85rem);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--accent-gold);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    h1, h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--text-bright);
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5.2vw, 4.3rem);
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      margin-bottom: 22px;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      line-height: 1.75;
+      color: var(--text-sub);
+      max-width: 950px;
+      margin-bottom: 16px;
+      font-weight: 300;
+    }
+
+    strong {
+      color: var(--text-bright);
+      font-weight: 600;
+    }
+
+    .highlight-gold {
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .highlight-emerald {
+      color: var(--accent-emerald);
+      font-weight: 600;
+    }
+
+    /* CAPA */
+    .slide-cover {
+      text-align: center;
+      align-items: center;
+    }
+
+    .slide-cover h1 {
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 1.7vw, 1.35rem);
+      color: var(--text-sub);
+      margin-bottom: 35px;
+      font-style: italic;
+      max-width: 800px;
+    }
+
+    /* CARDS & COMPARATIVOS */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 10px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--accent-gold);
+      padding: 24px;
+      border-radius: 8px;
+      backdrop-filter: blur(6px);
+    }
+
+    .card.emerald-border {
+      border-left-color: var(--accent-emerald);
+    }
+
+    .card h3 {
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      color: var(--text-bright);
+      margin-bottom: 10px;
+      font-family: 'Cinzel', serif;
+    }
+
+    .card p {
+      font-size: clamp(0.85rem, 1.1vw, 0.98rem);
+      margin-bottom: 0;
+      color: var(--text-sub);
+    }
+
+    /* CAIXA DE QUOTE REFINADA */
+    .quote-box {
+      background: rgba(56, 189, 248, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 30px 40px;
+      margin-top: 10px;
+      max-width: 850px;
+      position: relative;
+    }
+
+    .quote-box::before {
+      content: "“";
+      font-family: 'Cinzel', serif;
+      font-size: 5rem;
+      color: var(--accent-gold);
+      opacity: 0.2;
+      position: absolute;
+      top: -10px;
+      left: 15px;
+    }
+
+    .quote-text {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      line-height: 1.8;
+      color: #f8fafc;
+      font-style: italic;
+    }
+
+    /* BARRA DE NAVEGAÇÃO INFERIOR */
+    .nav-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 70px;
+      padding: 0 clamp(30px, 8vw, 120px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 11, 16, 0.88);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 100;
+    }
+
+    .counter {
+      font-size: clamp(0.8rem, 1.1vw, 0.95rem);
+      color: var(--text-sub);
+      letter-spacing: 2px;
+      font-weight: 500;
+    }
+
+    .counter span {
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+
+    .arrows-box {
+      display: flex;
+      gap: 16px;
+    }
+
+    .arrow-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-bright);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .arrow-btn:hover:not(:disabled) {
+      background: var(--accent-gold);
+      color: var(--bg-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+    }
+
+    .arrow-btn:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    /* OVERLAY PARA CELULAR EM PÉ */
+    .rotate-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg-dark);
+      z-index: 9999;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .rotate-overlay i {
+      font-size: 3.5rem;
+      color: var(--accent-gold);
+      margin-bottom: 20px;
+      animation: rotatePhone 2.5s infinite ease-in-out;
+    }
+
+    @keyframes rotatePhone {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-90deg); }
+    }
+
+    @media (max-width: 768px) and (orientation: portrait) {
+      .rotate-overlay { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AVISO DE GIRO PARA TELAS MÓVEIS -->
+  <div class="rotate-overlay">
+    <i class="fa-solid fa-mobile-screen-button"></i>
+    <h2>Gire o seu dispositivo</h2>
+    <p>Para visualizar o slide com a proporção correta, coloque o celular na horizontal.</p>
+  </div>
+
+  <div class="slide-deck">
+
+    <!-- SEÇÃO 1: CAPA -->
+    <section class="slide slide-cover active">
+      <i class="fa-solid fa-trophy floating-icon pos-1"></i>
+      <i class="fa-solid fa-basketball floating-icon pos-2"></i>
+      <i class="fa-solid fa-futbol floating-icon pos-3"></i>
+
+      <span class="tag">Educação Física</span>
+      <h1>Esporte de Invasão</h1>
+      <p class="subtitle">Texto de Apoio para Apresentação em Equipes — Ensino Médio</p>
+    </section>
+
+    <!-- SEÇÃO 2: O QUE SÃO ESPORTES DE INVASÃO? -->
+    <section class="slide">
+      <i class="fa-solid fa-shield-halved floating-icon pos-1"></i>
+      <i class="fa-solid fa-bullseye floating-icon pos-2"></i>
+
+      <span class="tag">01 / Conceito Fundamental</span>
+      <h2>O que são Esportes de Invasão?</h2>
+      <p>Esportes de invasão são modalidades coletivas em que duas equipes disputam o <strong>controle de uma bola ou objeto</strong>, tentando avançar pelo espaço da equipe adversária para alcançar um alvo e, ao mesmo tempo, proteger o próprio alvo.</p>
+      <p>As equipes atacam e defendem durante a partida, alternando constantemente essas funções conforme a posse do objeto e as situações do jogo.</p>
+      
+      <div class="quote-box">
+        <div class="quote-text">
+          "A palavra 'invasão' não significa desrespeitar o adversário ou agir de maneira violenta. Refere-se à ocupação estratégica do espaço da equipe contrária, dentro dos limites e das regras da modalidade."
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 3: EXEMPLOS DE MODALIDADES -->
+    <section class="slide">
+      <i class="fa-solid fa-football floating-icon pos-1"></i>
+      <i class="fa-solid fa-users floating-icon pos-2"></i>
+
+      <span class="tag">02 / Práticas Esportivas</span>
+      <h2>Exemplos de Modalidades</h2>
+      
+      <div class="cards-grid">
+        <div class="card">
+          <h3>Futebol & Futsal</h3>
+          <p>Equipes buscam marcar gols conduzindo e passando a bola com os pés. O Futsal adapta a dinâmica para quadras com equipes menores.</p>
+        </div>
+        <div class="card">
+          <h3>Basquetebol</h3>
+          <p>Movimentação da bola através de passes e dribles com as mãos para pontuar na cesta adversária.</p>
+        </div>
+        <div class="card">
+          <h3>Handebol & Rúgbi</h3>
+          <p>Handebol utiliza as mãos para passar, driblar e arremessar ao gol. Rúgbi avança com bola oval em corridas e passes coletivos.</p>
+        </div>
+      </div>
+      <p style="margin-top: 18px;"><strong>Diferenças Principais:</strong> Tamanho do espaço, quantidade de jogadores, equipamentos e maneiras de conduzir a bola e pontuar.</p>
+    </section>
+
+    <!-- SEÇÃO 4: PRINCÍPIOS TÁTICOS -->
+    <section class="slide">
+      <i class="fa-solid fa-chess-board floating-icon pos-1"></i>
+      <i class="fa-solid fa-arrows-split-up-and-left floating-icon pos-2"></i>
+
+      <span class="tag">03 / Tática e Estratégia</span>
+      <h2>Princípios Táticos: Atacar e Defender</h2>
+      
+      <div class="cards-grid">
+        <div class="card">
+          <h3>No Ataque</h3>
+          <p>Procura progredir até o alvo, manter a posse, criar oportunidades e finalizar. Exige passes, fintas, mudanças de direção e ocupação inteligente do espaço.</p>
+        </div>
+        <div class="card emerald-border">
+          <h3>Na Defesa & Transição</h3>
+          <p>Dificultar o avanço inimigo, proteger o alvo e recuperar a posse. A <strong>transição rápida</strong> exige alta concentração e tomada imediata de decisão.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 5: HABILIDADES E CAPACIDADES -->
+    <section class="slide">
+      <i class="fa-solid fa-child-reaching floating-icon pos-1"></i>
+      <i class="fa-solid fa-brain floating-icon pos-2"></i>
+
+      <span class="tag">04 / Desenvolvimento Humano</span>
+      <h2>Habilidades e Capacidades Desenvolvidas</h2>
+      
+      <div class="cards-grid">
+        <div class="card">
+          <h3>Motoras e Físicas</h3>
+          <p>Aprimora correr, saltar, arremessar, chutar e passar, mobilizando resistência, velocidade, força, agilidade, equilíbrio e coordenação.</p>
+        </div>
+        <div class="card">
+          <h3>Cognitivas e Sociais</h3>
+          <p>Estimula a antecipação de jogadas, resolução de problemas, comunicação em equipe, cooperação, responsabilidade e respeito mútuo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 6: REGRAS, ÉTICA E INCLUSÃO -->
+    <section class="slide">
+      <i class="fa-solid fa-handshake-angle floating-icon pos-1"></i>
+      <i class="fa-solid fa-scale-balanced floating-icon pos-2"></i>
+
+      <span class="tag">05 / Ética & Cidadania</span>
+      <h2>Regras, Ética e Inclusão</h2>
+      <p>As regras organizam a partida e garantem a <strong>segurança e a igualdade</strong>. É vital compreender o <strong>espírito esportivo</strong>: respeitar árbitros, colegas e adversários, evitando atitudes agressivas.</p>
+      
+      <div class="cards-grid" style="margin-top: 15px;">
+        <div class="card emerald-border">
+          <h3>Adaptabilidade e Inclusão</h3>
+          <p>Aulas ou jogos podem ter espaço, tempo e materiais adaptados. Incluir significa oferecer condições para que todos participem com segurança, dignidade e oportunidades reais de aprendizado.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 7: ESPORTE, CULTURA E SOCIEDADE -->
+    <section class="slide">
+      <i class="fa-solid fa-people-group floating-icon pos-1"></i>
+      <i class="fa-solid fa-globe floating-icon pos-2"></i>
+
+      <span class="tag">06 / Impacto Social</span>
+      <h2>Esporte, Cultura e Sociedade</h2>
+      <p>Os esportes de invasão integram a <strong>cultura corporal</strong> em escolas, bairros, clubes e projetos sociais. Cada comunidade desenvolve formas próprias de jogar, torcer e praticar.</p>
+      <p>Favorecem a convivência, o sentimento de pertencimento e hábitos ativos. É fundamental refletir sobre o <strong>acesso aos espaços esportivos e a igualdade de oportunidades</strong>.</p>
+    </section>
+
+    <!-- CONTROLES COM 2 SETAS INFERIORES -->
+    <div class="nav-bar">
+      <div class="counter">SEÇÃO <span id="current-index">01</span> / 07</div>
+      <div class="arrows-box">
+        <button class="arrow-btn" id="btn-prev" aria-label="Slide Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="arrow-btn" id="btn-next" aria-label="Próximo Slide"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.slide');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      const currentIndexText = document.getElementById('current-index');
+      
+      let currentIdx = 0;
+      const totalSlides = slides.length;
+
+      function updateSlideState() {
+        slides.forEach((slide, idx) => {
+          if (idx === currentIdx) {
+            slide.classList.add('active');
+          } else {
+            slide.classList.remove('active');
+          }
+        });
+
+        currentIndexText.textContent = String(currentIdx + 1).padStart(2, '0');
+        
+        btnPrev.disabled = currentIdx === 0;
+        btnNext.disabled = currentIdx === totalSlides - 1;
+      }
+
+      btnNext.addEventListener('click', () => {
+        if (currentIdx < totalSlides - 1) {
+          currentIdx++;
+          updateSlideState();
+        }
+      });
+
+      btnPrev.addEventListener('click', () => {
+        if (currentIdx > 0) {
+          currentIdx--;
+          updateSlideState();
+        }
+      });
+
+      // Navegação por Teclado
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+          if (currentIdx < totalSlides - 1) {
+            currentIdx++;
+            updateSlideState();
+          }
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          if (currentIdx > 0) {
+            currentIdx--;
+            updateSlideState();
+          }
+        }
+      });
+
+      // Gestos para toque na tela (swipe)
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      document.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      document.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      }, { passive: true });
+
+      function handleSwipe() {
+        const threshold = 50;
+        if (touchEndX < touchStartX - threshold) {
+          if (currentIdx < totalSlides - 1) {
+            currentIdx++;
+            updateSlideState();
+          }
+        } else if (touchEndX > touchStartX + threshold) {
+          if (currentIdx > 0) {
+            currentIdx--;
+            updateSlideState();
+          }
+        }
+      }
+
+      updateSlideState();
+    });
+  </script>
+</body>
+</html>
